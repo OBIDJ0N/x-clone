@@ -14,9 +14,13 @@ import {
 import { Input } from "../ui/input";
 import Button from "../ui/button";
 import userRegisterModal from "@/hooks/useRegisterModal";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import axios from "axios";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { AlertCircle } from "lucide-react";
 
 export default function LoginModal() {
+  const [error, setError] = useState("");
   const loginModal = userLoginModal();
   const registerModal = userRegisterModal();
 
@@ -33,8 +37,19 @@ export default function LoginModal() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+      const { data } = await axios.post("/api/auth/login", values);
+      if (data.success) {
+        loginModal.onClose();
+      }
+    } catch (error: any) {
+      if (error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("Something went wrong. Please try again");
+      }
+    }
   }
 
   const { isSubmitting } = form.formState;
@@ -42,6 +57,13 @@ export default function LoginModal() {
   const bodyContent = (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-12">
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         <FormField
           control={form.control}
           name="email"
@@ -82,7 +104,10 @@ export default function LoginModal() {
     <div className="text-neutral-400 text-center mb-4">
       <p>
         First time using X?{" "}
-        <span onClick={onToggle} className="text-white cursor-pointer hover:underline">
+        <span
+          onClick={onToggle}
+          className="text-white cursor-pointer hover:underline"
+        >
           Create an account
         </span>
       </p>
