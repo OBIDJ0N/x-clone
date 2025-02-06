@@ -1,6 +1,8 @@
 import Post from "@/database/post.model";
 import User from "@/database/user.model";
+import { authOptions } from "@/lib/auth-options";
 import { connectToDatabase } from "@/lib/mongoose";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -22,6 +24,8 @@ export async function GET(req: Request) {
   try {
     await connectToDatabase();
 
+    const { currentUser }: any = await getServerSession(authOptions);
+
     const { searchParams } = new URL(req.url);
     const limit = searchParams.get("limit");
 
@@ -34,7 +38,23 @@ export async function GET(req: Request) {
       .limit(Number(limit))
       .sort({ createdAt: -1 });
 
-    return NextResponse.json(posts);
+    const filteredPosts = posts.map((post) => ({
+      body: post.body,
+      createdAt: post.createdAt,
+      user: {
+        name: post.user.name,
+        email: post.user.email,
+        profileImage: post.user.profileImage,
+        _id: post.user._id,
+        username: post.user.username,
+      },
+      likes: post.likes.length,
+      comments: post.comments.length,
+      hasLiked: post.likes.includes(currentUser._id),
+      _id: post._id,
+    }));
+
+    return NextResponse.json(filteredPosts);
   } catch (error) {
     const result = error as Error;
     return NextResponse.json({ error: result.message }, { status: 400 });
@@ -42,15 +62,15 @@ export async function GET(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  try {
-    await connectToDatabase();
-    const { postId, userId } = await req.json();
+	try {
+		await connectToDatabase()
+		const { postId, userId } = await req.json()
 
-    await Post.findByIdAndDelete(postId);
+		await Post.findByIdAndDelete(postId)
 
-    return NextResponse.json({ message: "Post deleted successfully" });
-  } catch (error) {
-    const result = error as Error;
-    return NextResponse.json({ error: result.message }, { status: 400 });
-  }
+		return NextResponse.json({ message: 'Post deleted successfully' })
+	} catch (error) {
+		const result = error as Error
+		return NextResponse.json({ error: result.message }, { status: 400 })
+	}
 }

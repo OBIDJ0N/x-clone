@@ -10,6 +10,7 @@ import { FaHeart } from "react-icons/fa";
 import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   post: IPost;
@@ -19,7 +20,10 @@ interface Props {
 
 export default function PostItem({ post, user, setPosts }: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const onDelete = async () => {
+  const router = useRouter();
+
+  const onDelete = async (e: any) => {
+    e.stopPropagation()
     try {
       setIsLoading(true);
       await axios.delete("/api/posts", {
@@ -37,20 +41,71 @@ export default function PostItem({ post, user, setPosts }: Props) {
       });
     }
   };
+  console.log(post);
 
+  const onLike = async (e: any) => {
+    e.stopPropagation()
+    try {
+      setIsLoading(true);
+      if (post.hasLiked) {
+        await axios.delete(`/api/likes`, {
+          data: {
+            postId: post._id,
+            userId: user._id,
+          },
+        });
+
+        const updatedPosts = {
+          ...post,
+          hasLiked: false,
+          likes: post.likes - 1,
+        };
+
+        setPosts((prev) =>
+          prev.map((p) => (p._id === post._id ? updatedPosts : p))
+        );
+      } else {
+        await axios.put(`/api/likes`, {
+          postId: post._id,
+          userId: user._id,
+        });
+
+        const updatedPosts = {
+          ...post,
+          hasLiked: true,
+          likes: post.likes + 1,
+        };
+
+        setPosts((prev) =>
+          prev.map((p) => (p._id === post._id ? updatedPosts : p))
+        );
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      return toast({
+        title: "Error",
+        description: "Something went wrong. Please try again",
+      });
+    }
+  };
+
+  const goToPost = () => {
+    router.push(`posts/${post._id}`);
+  };
   return (
     <div
       className="border-b-[1px] border-neutral-800 p-5 cursor-pointer
   hover:bg-neutral-900 transition relative"
     >
-       {isLoading && (
-         <div className="absolute inset-0 w-full h-full bg-black opacity-50">
-         <div className="flex justify-center items-center h-full">
-             <Loader2 className="animate-spin text-sky-500" />
-         </div>
-     </div>
-       )}
-      <div className="flex flex-row items-center gap-3">
+      {isLoading && (
+        <div className="absolute inset-0 w-full h-full bg-black opacity-50">
+          <div className="flex justify-center items-center h-full">
+            <Loader2 className="animate-spin text-sky-500" />
+          </div>
+        </div>
+      )}
+      <div className="flex flex-row items-center gap-3 cursor-pointer" onClick={goToPost}>
         <Avatar>
           <AvatarImage src={post.user.profileImage} />
           <AvatarFallback>{post.user.name[0]}</AvatarFallback>
@@ -75,15 +130,16 @@ export default function PostItem({ post, user, setPosts }: Props) {
           <div className="flex flex-row items-center mt-3 gap-10">
             <div className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer transition hover:text-sky-500">
               <AiOutlineMessage size={20} />
-              <p>{post.comments.length || 0}</p>
+              <p>{post.comments || 0}</p>
             </div>
 
             <div
               className={`flex flex-row items-center text-neutral-500 gap-2 cursor-pointer transition hover:text-red-500`}
               role="button"
+              onClick={onLike}
             >
-              <FaHeart size={20} color="red" />
-              <p>{post.likes.length || 0}</p>
+              <FaHeart size={20} color={post.hasLiked ? "red" : ""} />
+              <p>{post.likes || 0}</p>
             </div>
 
             {post.user._id === user._id && (
