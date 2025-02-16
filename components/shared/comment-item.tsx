@@ -8,6 +8,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { FaHeart } from "react-icons/fa";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface Props {
   comment: IPost;
@@ -23,6 +24,7 @@ export default function CommentItem({
   comments,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const onLike = async () => {
     try {
       setIsLoading(true);
@@ -66,18 +68,23 @@ export default function CommentItem({
     }
   };
 
-
   const onDelete = async () => {
     try {
-      setIsLoading(true)
-      await axios.delete(`/api/comments/${comment._id}`)
-      setComments((prev) => prev.filter((c) => c._id !== comment._id))
+      setIsLoading(true);
+      await axios.delete(`/api/comments/${comment._id}`);
+      setComments((prev) => prev.filter((c) => c._id !== comment._id));
       setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
   };
+
+  const goToProfile = (evt: any) => {
+    evt.stopPropagation();
+    router.push(`/profile/${user._id}`);
+  };
+
   return (
     <div
       className="border-b-[1px] relative border-neutral-800 p-5 cursor-pointer
@@ -91,11 +98,11 @@ hover:bg-neutral-900 transition"
         </div>
       )}
       <div className="flex flex-row items-center gap-3 cursor-pointer">
-        <Avatar>
+        <Avatar onClick={goToProfile}>
           <AvatarImage src={comment.user.profileImage} />
           <AvatarFallback>{comment.user.name[0]}</AvatarFallback>
         </Avatar>
-        <div>
+        <div onClick={goToProfile}>
           <div className="flex flex-row items-center gap-2">
             <p className="text-white font-semibold cursor-pointer hover:underline">
               {comment.user.name}

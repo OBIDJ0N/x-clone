@@ -36,8 +36,8 @@ export default function Page() {
         <div className="flex justify-center items-center h-24">
           <Loader2 className="animate-spin text-sky-500" />
         </div>
-      ) : (
-        <>
+        ) : (
+          <>
           <Form
             placeholder="What's on your mind?"
             user={JSON.parse(JSON.stringify(session.currentUser))}
