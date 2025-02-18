@@ -59,6 +59,7 @@ export default function Form({
       setIsLoading(false);
       setBody("");
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       toast({
         title: "Error",

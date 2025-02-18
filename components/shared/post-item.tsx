@@ -34,6 +34,7 @@ export default function PostItem({ post, user, setPosts }: Props) {
       setPosts((prev) => prev.filter((p) => p._id !== post._id));
       setIsLoading(false);
     } catch (error) {
+      console.log(error)
       setIsLoading(false);
       return toast({
         title: "Error",
@@ -82,6 +83,7 @@ export default function PostItem({ post, user, setPosts }: Props) {
       }
       setIsLoading(false);
     } catch (error) {
+      console.log(error)
       setIsLoading(false);
       return toast({
         title: "Error",

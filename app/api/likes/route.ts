@@ -42,7 +42,7 @@ export async function DELETE(req: Request) {
       { new: true }
     );
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json(post);
   } catch (error) {
     const result = error as Error;
     return NextResponse.json({ error: result.message }, { status: 400 });

@@ -64,7 +64,7 @@ export async function GET(req: Request) {
 export async function DELETE(req: Request) {
 	try {
 		await connectToDatabase()
-		const { postId, userId } = await req.json()
+		const { postId } = await req.json()
 
 		await Post.findByIdAndDelete(postId)
 
