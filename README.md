@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+X-Clone
 
-## Getting Started
+X-Clone is a Twitter-inspired social media platform built using Next.js, TypeScript, and Tailwind CSS. It provides authentication, theming, post creation, and real-time updates using modern web technologies.
 
-First, run the development server:
+Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔐 Authentication - Secure login with NextAuth.js
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+📝 Post Creation - Users can create and interact with posts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+📌 State Management - Zustand for global state handling
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🚀 Fast & Optimized - Built with Next.js and optimized for performance
 
-## Learn More
+Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+Frontend: Next.js, React, TypeScript, Tailwind CSS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+State Management: Zustand
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+UI Components: ShadCn, Radix UI, Lucide Icons, React Icons
 
-## Deploy on Vercel
+Form Handling: React Hook Form & Zod validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Data Fetching: SWR & Axios
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Backend: MongoDB with Mongoose
+
+Authentication: NextAuth.js
+
+Installation
+
+To run the project locally, follow these steps:
+
+# Clone the repository
+git clone https://github.com/OBIDJ0N/x-clone.git
+
+# Navigate to the project folder
+cd x-clone
+
+# Install dependencies
+yarn install  # or npm install
+
+# Start the development server
+yarn dev  # or npm run dev
+
+Environment Variables
+
+Create a .env.local file and add the necessary environment variables:
+
+NEXTAUTH_URL=http://localhost:3000
+DATABASE_URL=mongodb+srv://your-mongodb-uri
+NEXTAUTH_SECRET=your-secret-key
+
+Scripts
+
+npm run dev - Run the development server
+
+npm build - Build the application for production
+
+npm start - Start the production server
+
+npm lint - Run ESLint for code quality
+
+Contribution
+
+Feel free to fork the project and submit a pull request! Any contributions, issues, and feature requests are welcome.
