@@ -2,7 +2,10 @@ X-Clone
 
 X-Clone is a Twitter-inspired social media platform built using Next.js, TypeScript, and Tailwind CSS. It provides authentication, theming, post creation, and real-time updates using modern web technologies.
 
-Features
+# Live view
+https://x-clone-snowy.vercel.app/
+
+# Features
 
 🔐 Authentication - Secure login with NextAuth.js
 
@@ -12,23 +15,23 @@ Features
 
 🚀 Fast & Optimized - Built with Next.js and optimized for performance
 
-Tech Stack
+# Tech Stack
 
-Frontend: Next.js, React, TypeScript, Tailwind CSS
+ - Frontend: Next.js, React, TypeScript, Tailwind CSS
 
-State Management: Zustand
+ - State Management: Zustand
 
-UI Components: ShadCn, Radix UI, Lucide Icons, React Icons
+ - UI Components: ShadCn, Radix UI, Lucide Icons, React Icons
 
-Form Handling: React Hook Form & Zod validation
+ - Form Handling: React Hook Form & Zod validation
 
-Data Fetching: SWR & Axios
+ - Data Fetching: SWR & Axios
 
-Backend: MongoDB with Mongoose
+ - Backend: MongoDB with Mongoose
 
-Authentication: NextAuth.js
+ - Authentication: NextAuth.js
 
-Installation
+# Installation
 
 To run the project locally, follow these steps:
 
@@ -44,7 +47,7 @@ yarn install  # or npm install
 # Start the development server
 yarn dev  # or npm run dev
 
-Environment Variables
+# Environment Variables
 
 Create a .env.local file and add the necessary environment variables:
 
@@ -52,7 +55,7 @@ NEXTAUTH_URL=http://localhost:3000
 DATABASE_URL=mongodb+srv://your-mongodb-uri
 NEXTAUTH_SECRET=your-secret-key
 
-Scripts
+# Scripts
 
 npm run dev - Run the development server
 
