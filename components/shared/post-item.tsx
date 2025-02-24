@@ -23,7 +23,7 @@ export default function PostItem({ post, user, setPosts }: Props) {
   const router = useRouter();
 
   const onDelete = async (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     try {
       setIsLoading(true);
       await axios.delete("/api/posts", {
@@ -34,7 +34,7 @@ export default function PostItem({ post, user, setPosts }: Props) {
       setPosts((prev) => prev.filter((p) => p._id !== post._id));
       setIsLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setIsLoading(false);
       return toast({
         title: "Error",
@@ -45,7 +45,7 @@ export default function PostItem({ post, user, setPosts }: Props) {
   console.log(post);
 
   const onLike = async (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     try {
       setIsLoading(true);
       if (post.hasLiked) {
@@ -83,12 +83,12 @@ export default function PostItem({ post, user, setPosts }: Props) {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setIsLoading(false);
       return toast({
         title: "Error",
         description: "Something went wrong. Please try again",
-      }); 
+      });
     }
   };
 
@@ -113,7 +113,10 @@ export default function PostItem({ post, user, setPosts }: Props) {
           </div>
         </div>
       )}
-      <div className="flex flex-row items-center gap-3 cursor-pointer" onClick={goToPost}>
+      <div
+        className="flex flex-row items-center gap-3 cursor-pointer"
+        onClick={goToPost}
+      >
         <Avatar onClick={goToProfile}>
           <AvatarImage src={post.user.profileImage} />
           <AvatarFallback>{post.user.name[0]}</AvatarFallback>
@@ -136,7 +139,13 @@ export default function PostItem({ post, user, setPosts }: Props) {
           <div className="text-white mt-1">{post.body}</div>
 
           <div className="flex flex-row items-center mt-3 gap-10">
-            <div className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer transition hover:text-sky-500">
+            <div
+              className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer transition hover:text-sky-500"
+              onClick={(e) => {
+                e.stopPropagation(); 
+                router.push(`/posts/${post._id}`);
+              }}
+            >
               <AiOutlineMessage size={20} />
               <p>{post.comments || 0}</p>
             </div>
